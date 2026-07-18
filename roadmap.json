@@ -1,0 +1,384 @@
+{
+  "meta": {
+    "projectName": "MomentumForge",
+    "tagline": "Turn daily effort into placement-ready progress.",
+    "startDate": "2026-07-20",
+    "weeklyGoalHours": 25,
+    "contentVersion": 2,
+    "categories": [
+      "DSA",
+      "Development",
+      "DSA Sheet",
+      "Revision"
+    ]
+  },
+  "quotes": [
+    "Small steps every day beat giant leaps once in a while.",
+    "Discipline is choosing between what you want now and what you want most.",
+    "The pain of discipline weighs ounces; the pain of regret weighs tons.",
+    "Your future is created by what you do today, not tomorrow.",
+    "Consistency compounds. Show up even when it's boring.",
+    "Every problem you solve today is an interview question you won't fear tomorrow.",
+    "Success is the sum of small efforts repeated day in and day out.",
+    "You don't have to be great to start, but you have to start to be great.",
+    "Tier-1 companies hire consistent problem solvers, not last-minute crammers.",
+    "One percent better every day is enough."
+  ],
+  "tips": {
+    "daily": [
+      "Revise yesterday's DSA topic for 10 minutes before starting new problems.",
+      "Explain today's concept out loud as if teaching someone \u2014 it reveals gaps fast.",
+      "Timebox each problem to 25-30 minutes before checking the solution.",
+      "Write your own test cases before running any code."
+    ],
+    "interview": [
+      "Always clarify constraints before writing code in an interview.",
+      "Think out loud \u2014 interviewers evaluate your process, not just the answer.",
+      "Practice explaining time and space complexity for every solution you write.",
+      "Prepare 3 solid stories using the STAR method for behavioral rounds."
+    ],
+    "coding": [
+      "Dry-run your code on a small example before submitting.",
+      "Master the 2-pointer and sliding window patterns \u2014 they cover 30% of problems.",
+      "Write brute force first, then optimize \u2014 never skip straight to the 'clever' solution.",
+      "Track your recurring mistakes in a notes file and review weekly."
+    ],
+    "placement": [
+      "Update your resume every 2 weeks with new projects and skills.",
+      "Apply to 5 companies daily, don't wait until you feel 'fully ready'.",
+      "Contribute to one open-source repo \u2014 it stands out on a resume.",
+      "Mock interviews weekly are worth more than 10 extra hours of solo practice."
+    ],
+    "missed": [
+      "No more excuses. This was due earlier \u2014 finish it today.",
+      "Skipping this again turns a slip into a habit. Not today.",
+      "Every day you carry this forward, the pile gets heavier. Clear it now.",
+      "You committed to this. Today is the day you keep that promise.",
+      "This won't complete itself by sitting in the queue. Do it now.",
+      "Falling behind once is normal. Staying behind is a choice \u2014 choose differently today."
+    ]
+  },
+  "warnings": [
+    {
+      "topic": "Recursion",
+      "extraDays": 3,
+      "level": "warning"
+    },
+    {
+      "topic": "Graphs",
+      "extraDays": 7,
+      "level": "danger"
+    },
+    {
+      "topic": "Dynamic Programming",
+      "extraDays": 10,
+      "level": "danger"
+    },
+    {
+      "topic": "Trees",
+      "extraDays": 5,
+      "level": "warning"
+    },
+    {
+      "topic": "React",
+      "extraDays": 7,
+      "level": "warning"
+    },
+    {
+      "topic": "Backend Mega Project",
+      "extraDays": 7,
+      "level": "warning"
+    }
+  ],
+  "smartSchedule": {
+    "weekday": [
+      {
+        "category": "DSA",
+        "hours": 2
+      },
+      {
+        "category": "Development",
+        "hours": 1
+      },
+      {
+        "category": "Revision",
+        "minutes": 20
+      }
+    ],
+    "weekend": [
+      {
+        "category": "DSA",
+        "hours": 5
+      },
+      {
+        "category": "Development",
+        "hours": 3
+      },
+      {
+        "category": "Revision",
+        "minutes": 30
+      }
+    ]
+  },
+  "timeline": [
+    {
+      "id": "t1",
+      "label": "20 July",
+      "sublabel": "Kickoff",
+      "date": "2026-07-20"
+    },
+    {
+      "id": "t2",
+      "label": "Week 1",
+      "sublabel": "Arrays & Strings",
+      "date": "2026-07-27"
+    },
+    {
+      "id": "t3",
+      "label": "Week 2",
+      "sublabel": "Recursion & Sorting",
+      "date": "2026-08-03"
+    },
+    {
+      "id": "t4",
+      "label": "Week 3",
+      "sublabel": "Trees & Graphs Intro",
+      "date": "2026-08-10"
+    },
+    {
+      "id": "t5",
+      "label": "September",
+      "sublabel": "DP & Backend Basics",
+      "date": "2026-09-03"
+    },
+    {
+      "id": "t6",
+      "label": "October",
+      "sublabel": "System Design + Projects",
+      "date": "2026-10-03"
+    },
+    {
+      "id": "t7",
+      "label": "November",
+      "sublabel": "Mock Interviews",
+      "date": "2026-11-03"
+    },
+    {
+      "id": "t8",
+      "label": "December",
+      "sublabel": "Applications & Rounds",
+      "date": "2026-12-03"
+    },
+    {
+      "id": "t9",
+      "label": "Interview Ready",
+      "sublabel": "Placement Season",
+      "date": "2027-01-03"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "task-001",
+      "date": "2026-07-20",
+      "category": "DSA",
+      "topic": "Arrays Basics",
+      "durationMinutes": 45,
+      "difficulty": "Easy",
+      "priority": "High",
+      "completed": false,
+      "order": 1
+    },
+    {
+      "id": "task-002",
+      "date": "2026-07-20",
+      "category": "Development",
+      "topic": "HTML5 Semantic Tags",
+      "durationMinutes": 60,
+      "difficulty": "Easy",
+      "priority": "Medium",
+      "completed": false,
+      "order": 2
+    },
+    {
+      "id": "task-003",
+      "date": "2026-07-20",
+      "category": "DSA Sheet",
+      "topic": "DSA Sheet — Day 1",
+      "durationMinutes": 40,
+      "difficulty": "Medium",
+      "priority": "High",
+      "completed": false,
+      "order": 3
+    },
+    {
+      "id": "task-004",
+      "date": "2026-07-20",
+      "category": "Revision",
+      "topic": "Time Complexity Basics",
+      "durationMinutes": 20,
+      "difficulty": "Easy",
+      "priority": "Low",
+      "completed": false,
+      "order": 4
+    },
+    {
+      "id": "task-005",
+      "date": "2026-07-21",
+      "category": "DSA",
+      "topic": "Arrays - Two Pointer",
+      "durationMinutes": 60,
+      "difficulty": "Medium",
+      "priority": "High",
+      "completed": false,
+      "order": 1
+    },
+    {
+      "id": "task-006",
+      "date": "2026-07-21",
+      "category": "Development",
+      "topic": "CSS Flexbox & Grid",
+      "durationMinutes": 60,
+      "difficulty": "Medium",
+      "priority": "Medium",
+      "completed": false,
+      "order": 2
+    },
+    {
+      "id": "task-007",
+      "date": "2026-07-21",
+      "category": "DSA Sheet",
+      "topic": "DSA Sheet — Day 2",
+      "durationMinutes": 40,
+      "difficulty": "Medium",
+      "priority": "High",
+      "completed": false,
+      "order": 3
+    },
+    {
+      "id": "task-008",
+      "date": "2026-07-22",
+      "category": "DSA",
+      "topic": "Strings Basics",
+      "durationMinutes": 50,
+      "difficulty": "Easy",
+      "priority": "Medium",
+      "completed": false,
+      "order": 1
+    },
+    {
+      "id": "task-009",
+      "date": "2026-07-22",
+      "category": "Development",
+      "topic": "JavaScript DOM Manipulation",
+      "durationMinutes": 60,
+      "difficulty": "Medium",
+      "priority": "High",
+      "completed": false,
+      "order": 2
+    },
+    {
+      "id": "task-010",
+      "date": "2026-07-23",
+      "category": "DSA",
+      "topic": "Binary Search",
+      "durationMinutes": 55,
+      "difficulty": "Medium",
+      "priority": "High",
+      "completed": false,
+      "order": 1
+    },
+    {
+      "id": "task-011",
+      "date": "2026-07-23",
+      "category": "Development",
+      "topic": "JavaScript ES6+ Features",
+      "durationMinutes": 45,
+      "difficulty": "Medium",
+      "priority": "Medium",
+      "completed": false,
+      "order": 2
+    },
+    {
+      "id": "task-012",
+      "date": "2026-07-24",
+      "category": "DSA",
+      "topic": "Recursion",
+      "durationMinutes": 70,
+      "difficulty": "Hard",
+      "priority": "High",
+      "completed": false,
+      "order": 1
+    },
+    {
+      "id": "task-013",
+      "date": "2026-07-25",
+      "category": "DSA",
+      "topic": "Sorting Algorithms",
+      "durationMinutes": 60,
+      "difficulty": "Medium",
+      "priority": "High",
+      "completed": false,
+      "order": 1
+    },
+    {
+      "id": "task-014",
+      "date": "2026-07-26",
+      "category": "DSA",
+      "topic": "Trees - Traversals",
+      "durationMinutes": 65,
+      "difficulty": "Hard",
+      "priority": "High",
+      "completed": false,
+      "order": 1
+    },
+    {
+      "id": "task-015",
+      "date": "2026-07-27",
+      "category": "DSA",
+      "topic": "Graphs - BFS/DFS",
+      "durationMinutes": 75,
+      "difficulty": "Hard",
+      "priority": "High",
+      "completed": false,
+      "order": 1
+    },
+    {
+      "id": "task-016",
+      "date": "2026-07-28",
+      "category": "DSA",
+      "topic": "Dynamic Programming Intro",
+      "durationMinutes": 80,
+      "difficulty": "Hard",
+      "priority": "High",
+      "completed": false,
+      "order": 1
+    },
+    {
+      "id": "task-017",
+      "date": "2026-07-29",
+      "category": "Development",
+      "topic": "React Fundamentals",
+      "durationMinutes": 90,
+      "difficulty": "Hard",
+      "priority": "Medium",
+      "completed": false,
+      "order": 1
+    },
+    {
+      "id": "task-018",
+      "date": "2026-07-30",
+      "category": "Development",
+      "topic": "Backend Mega Project - Setup",
+      "durationMinutes": 90,
+      "difficulty": "Hard",
+      "priority": "Medium",
+      "completed": false,
+      "order": 1
+    }
+  ],
+  "notes": {
+    "daily": {},
+    "weekly": {},
+    "monthly": {}
+  }
+}

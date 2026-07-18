@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MomentumForge — Placement Preparation Planner</title>
+<meta name="description" content="MomentumForge — turn daily effort into placement-ready progress." />
+
+<!-- Favicon / logo (browser tab + phone home-screen icon) -->
+<link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16.png" />
+<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
+<link rel="manifest" href="manifest.json" />
+<meta name="theme-color" content="#123A66" />
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ============ CUSTOM CURSOR ============ -->
+<div class="cursor-frame" aria-hidden="true">
+  <span class="corner tl"></span>
+  <span class="corner tr"></span>
+  <span class="corner bl"></span>
+  <span class="corner br"></span>
+</div>
+<div class="cursor-core" aria-hidden="true"></div>
+
+<!-- ============ SKIP LINK (Accessibility) ============ -->
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<!-- ============ NAVBAR ============ -->
+<header class="navbar" id="navbar">
+  <div class="navbar-inner">
+    <div class="logo">
+      <span class="logo-mark" aria-hidden="true">
+        <svg viewBox="0 0 36 36" width="20" height="20">
+          <path d="M8 27 L26 9" fill="none" stroke="#FFFFFF" stroke-width="3.4" stroke-linecap="round"/>
+          <path d="M16 9 L26 9 L26 19" fill="none" stroke="#FFFFFF" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M4 23 L9 23" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" opacity="0.55"/>
+          <path d="M4 18 L7 18" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" opacity="0.3"/>
+        </svg>
+      </span>
+      <span class="logo-text">MomentumForge</span>
+    </div>
+
+    <nav class="nav-menu" id="navMenu" aria-label="Primary">
+      <button class="nav-link active" data-nav="dashboard">Dashboard</button>
+      <button class="nav-link" data-nav="daily">Daily</button>
+      <button class="nav-link" data-nav="weekly">Weekly</button>
+      <button class="nav-link" data-nav="monthly">Monthly</button>
+      <button class="nav-link" data-nav="statistics">Statistics</button>
+      <button class="nav-link" data-nav="settings">Settings</button>
+    </nav>
+
+    <div class="navbar-actions">
+      <button class="icon-btn" id="searchToggle" aria-label="Search (Ctrl+K)" title="Search (Ctrl+K)">
+        <svg viewBox="0 0 24 24" width="20" height="20"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span class="toggle-track">
+          <span class="toggle-thumb">
+            <svg class="icon-sun" viewBox="0 0 24 24" width="14" height="14"><circle cx="12" cy="12" r="5" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></g></svg>
+            <svg class="icon-moon" viewBox="0 0 24 24" width="14" height="14"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="currentColor"/></svg>
+          </span>
+        </span>
+      </button>
+      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ============ COMMAND PALETTE ============ -->
+<div class="command-palette-overlay" id="cmdOverlay">
+  <div class="command-palette" role="dialog" aria-modal="true" aria-label="Command palette">
+    <div class="cmd-input-wrap">
+      <svg viewBox="0 0 24 24" width="18" height="18"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <input type="text" id="cmdInput" placeholder="Search topics, tasks, or type a command..." autocomplete="off" />
+      <kbd>ESC</kbd>
+    </div>
+    <div class="cmd-results" id="cmdResults"></div>
+  </div>
+</div>
+
+<main id="main-content">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="hero">
+    <div class="hero-bg-orb orb1"></div>
+    <div class="hero-bg-orb orb2"></div>
+    <div class="hero-inner">
+      <div class="hero-left fade-up">
+        <p class="hero-greeting" id="heroGreeting">Good Morning</p>
+        <h1 class="hero-date" id="heroDate">Loading date...</h1>
+        <p class="hero-tagline">Turn daily effort into placement-ready progress.</p>
+        <blockquote class="hero-quote" id="heroQuote">Loading today's motivation...</blockquote>
+        <div class="hero-clock" id="liveClock">--:--:--</div>
+      </div>
+      <div class="hero-right fade-up delay-1">
+        <div class="progress-ring-card glass">
+          <p class="progress-ring-label">Today's Progress</p>
+          <div class="progress-ring-wrap">
+            <svg viewBox="0 0 140 140" class="progress-ring" id="heroRing">
+              <circle cx="70" cy="70" r="60" class="ring-bg" />
+              <circle cx="70" cy="70" r="60" class="ring-fg" id="heroRingFg" />
+            </svg>
+            <div class="progress-ring-text">
+              <span class="ring-percent" id="heroRingPercent">0%</span>
+              <span class="ring-sub" id="heroRingSub">0 / 0 tasks</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DASHBOARD ============ -->
+  <section class="section" id="dashboard">
+    <div class="section-inner">
+      <div class="section-header">
+        <h2>Dashboard</h2>
+        <p>Your entire placement journey at a glance.</p>
+      </div>
+
+      <div class="stats-grid" id="statsGrid"><!-- injected --></div>
+
+      <div class="dashboard-secondary-grid">
+        <div class="card glass tip-card" id="tipCard">
+          <div class="card-icon-badge gold">💡</div>
+          <h3>Today's Tip</h3>
+          <p id="dailyTipText">Loading tip...</p>
+        </div>
+        <div class="card glass tip-card">
+          <div class="card-icon-badge">🎯</div>
+          <h3>Placement Tip</h3>
+          <p id="placementTipText">Loading tip...</p>
+        </div>
+        <div class="card glass tip-card">
+          <div class="card-icon-badge">🧠</div>
+          <h3>Interview Tip</h3>
+          <p id="interviewTipText">Loading tip...</p>
+        </div>
+        <div class="card glass tip-card">
+          <div class="card-icon-badge">⌨️</div>
+          <h3>Coding Tip</h3>
+          <p id="codingTipText">Loading tip...</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SMART SCHEDULE ============ -->
+  <section class="section alt-bg" id="smartSchedule">
+    <div class="section-inner">
+      <div class="section-header">
+        <h2>Smart Time Management</h2>
+        <p>Recommended daily allocation based on your roadmap.</p>
+      </div>
+      <div class="schedule-grid" id="scheduleGrid"><!-- injected --></div>
+    </div>
+  </section>
+
+  <!-- ============ TABS: DAILY / WEEKLY / MONTHLY / STATISTICS ============ -->
+  <section class="section" id="plannerTabs">
+    <div class="section-inner">
+      <div class="tabbar" role="tablist" aria-label="Planner views">
+        <button class="tab-btn active" data-tab="daily" role="tab" aria-selected="true">Daily</button>
+        <button class="tab-btn" data-tab="weekly" role="tab" aria-selected="false">Weekly</button>
+        <button class="tab-btn" data-tab="monthly" role="tab" aria-selected="false">Monthly</button>
+        <button class="tab-btn" data-tab="statistics" role="tab" aria-selected="false">Statistics</button>
+        <span class="tab-indicator" id="tabIndicator"></span>
+      </div>
+
+      <!-- ===== DAILY PANEL ===== -->
+      <div class="tab-panel active" id="panel-daily" role="tabpanel">
+        <div class="panel-toolbar">
+          <div class="daily-date-nav">
+            <button class="icon-btn small" id="dayPrev" aria-label="Previous day">&#8592;</button>
+            <h3 id="dailyViewDate">Today</h3>
+            <button class="icon-btn small" id="dayNext" aria-label="Next day">&#8594;</button>
+          </div>
+          <div class="filter-bar">
+            <select id="filterCategory" class="select-input">
+              <option value="all">All Categories</option>
+            </select>
+            <select id="filterStatus" class="select-input">
+              <option value="all">All</option>
+              <option value="pending">Pending</option>
+              <option value="completed">Completed</option>
+              <option value="high">High Priority</option>
+            </select>
+            <button class="btn btn-ghost" id="addTaskBtn">+ Add Task</button>
+            <button class="btn btn-ghost" id="pushTimetableBtn" title="Shift every pending task forward by 1 day">⏭ Push All to Next Day</button>
+          </div>
+        </div>
+
+        <div class="daily-layout">
+          <div class="daily-tasks-col">
+            <div id="missedZone" class="missed-zone"><!-- injected --></div>
+            <div id="warningZone" class="warning-zone"><!-- injected --></div>
+            <div id="dailyTaskList" class="task-list"><!-- injected --></div>
+            <p class="empty-state" id="dailyEmptyState" hidden>No tasks for this day. Try "Add Task" or check upcoming tasks.</p>
+          </div>
+
+          <aside class="daily-side-col">
+            <div class="card glass">
+              <h3>Daily Progress</h3>
+              <div class="progress-ring-wrap small">
+                <svg viewBox="0 0 120 120" class="progress-ring" id="dayRing">
+                  <circle cx="60" cy="60" r="50" class="ring-bg" />
+                  <circle cx="60" cy="60" r="50" class="ring-fg" id="dayRingFg" />
+                </svg>
+                <div class="progress-ring-text">
+                  <span class="ring-percent" id="dayRingPercent">0%</span>
+                </div>
+              </div>
+              <div class="mini-stats">
+                <div><span id="dayCompletedCount">0</span><label>Completed</label></div>
+                <div><span id="dayRemainingCount">0</span><label>Remaining</label></div>
+                <div><span id="dayHours">0h</span><label>Study Hours</label></div>
+              </div>
+            </div>
+
+            <div class="card glass">
+              <h3>Daily Notes</h3>
+              <textarea id="dailyNotesArea" class="notes-area" placeholder="Jot down anything about today's study session... (auto-saves)"></textarea>
+            </div>
+          </aside>
+        </div>
+      </div>
+
+      <!-- ===== WEEKLY PANEL ===== -->
+      <div class="tab-panel" id="panel-weekly" role="tabpanel">
+        <div class="panel-toolbar">
+          <div class="daily-date-nav">
+            <button class="icon-btn small" id="weekPrev" aria-label="Previous week">&#8592;</button>
+            <h3 id="weeklyViewLabel">This Week</h3>
+            <button class="icon-btn small" id="weekNext" aria-label="Next week">&#8594;</button>
+          </div>
+        </div>
+        <div class="weekly-grid" id="weeklyGrid"><!-- injected --></div>
+        <div class="card glass" style="margin-top:20px;">
+          <h3>Weekly Notes</h3>
+          <textarea id="weeklyNotesArea" class="notes-area" placeholder="Weekly reflection... (auto-saves)"></textarea>
+        </div>
+      </div>
+
+      <!-- ===== MONTHLY PANEL ===== -->
+      <div class="tab-panel" id="panel-monthly" role="tabpanel">
+        <div class="panel-toolbar">
+          <div class="daily-date-nav">
+            <button class="icon-btn small" id="monthPrev" aria-label="Previous month">&#8592;</button>
+            <h3 id="monthlyViewLabel">Month</h3>
+            <button class="icon-btn small" id="monthNext" aria-label="Next month">&#8594;</button>
+          </div>
+        </div>
+        <div class="monthly-calendar-wrap">
+          <div class="calendar-weekdays">
+            <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+          </div>
+          <div class="calendar-grid" id="calendarGrid"><!-- injected --></div>
+        </div>
+        <div class="card glass" id="monthDayDetail" hidden>
+          <h3 id="monthDayDetailTitle">Day details</h3>
+          <div id="monthDayDetailBody"></div>
+        </div>
+        <div class="card glass" style="margin-top:20px;">
+          <h3>Monthly Notes</h3>
+          <textarea id="monthlyNotesArea" class="notes-area" placeholder="Monthly reflection... (auto-saves)"></textarea>
+        </div>
+      </div>
+
+      <!-- ===== STATISTICS PANEL ===== -->
+      <div class="tab-panel" id="panel-statistics" role="tabpanel">
+        <div class="stats-detail-grid" id="statsDetailGrid"><!-- injected --></div>
+
+        <div class="chart-row">
+          <div class="card glass chart-card">
+            <h3>Category Completion</h3>
+            <div id="categoryBarChart" class="bar-chart"><!-- injected --></div>
+          </div>
+          <div class="card glass chart-card">
+            <h3>Overall Completion</h3>
+            <div class="donut-wrap">
+              <svg viewBox="0 0 140 140" class="progress-ring" id="statsDonut">
+                <circle cx="70" cy="70" r="60" class="ring-bg" />
+                <circle cx="70" cy="70" r="60" class="ring-fg" id="statsDonutFg" />
+              </svg>
+              <div class="progress-ring-text">
+                <span class="ring-percent" id="statsDonutPercent">0%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TIMELINE ============ -->
+  <section class="section alt-bg" id="timelineSection">
+    <div class="section-inner">
+      <div class="section-header">
+        <h2>Your Roadmap Timeline</h2>
+        <p>The path from today to interview-ready.</p>
+      </div>
+      <div class="timeline" id="timelineWrap"><!-- injected --></div>
+    </div>
+  </section>
+
+  <!-- ============ SETTINGS ============ -->
+  <section class="section" id="settings">
+    <div class="section-inner">
+      <div class="section-header">
+        <h2>Settings</h2>
+        <p>Manage your data, theme, and preferences.</p>
+      </div>
+      <div class="settings-grid">
+        <div class="card glass">
+          <h3>Backup &amp; Restore</h3>
+          <p class="muted">Export your progress as JSON, or restore from a previous backup.</p>
+          <div class="btn-row">
+            <button class="btn btn-primary" id="exportJsonBtn">Export JSON</button>
+            <label class="btn btn-ghost file-btn">
+              Import JSON
+              <input type="file" id="importJsonInput" accept="application/json" hidden />
+            </label>
+          </div>
+        </div>
+        <div class="card glass">
+          <h3>Printable Planner</h3>
+          <p class="muted">Generate a clean, branded document you can print or save as a PDF.</p>
+          <div class="btn-row" style="margin-top:14px;">
+            <select id="printScope" class="select-input">
+              <option value="today">Today's Tasks</option>
+              <option value="week">This Week</option>
+              <option value="all">Full Roadmap</option>
+            </select>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-primary" id="printBtn">Print / Export PDF</button>
+          </div>
+        </div>
+        <div class="card glass">
+          <h3>Reset Progress</h3>
+          <p class="muted">Clear all completed checkboxes and streaks. This cannot be undone.</p>
+          <div class="btn-row">
+            <button class="btn btn-danger" id="resetBtn">Reset All Progress</button>
+          </div>
+        </div>
+        <div class="card glass">
+          <h3>Keyboard Shortcuts</h3>
+          <ul class="shortcut-list">
+            <li><kbd>Ctrl</kbd> + <kbd>K</kbd> Command palette</li>
+            <li><kbd>T</kbd> Toggle theme</li>
+            <li><kbd>1-5</kbd> Jump to section</li>
+            <li><kbd>Esc</kbd> Close dialogs</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ FLOATING ACTION BUTTON ============ -->
+<div class="fab-wrap">
+  <button class="fab" id="fabMain" aria-label="Quick actions" aria-expanded="false">
+    <svg viewBox="0 0 24 24" width="22" height="22"><line x1="12" y1="5" x2="12" y2="19" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+  </button>
+  <div class="fab-menu" id="fabMenu">
+    <button class="fab-item" data-fab="addTask">+ Add Task</button>
+    <button class="fab-item" data-fab="cmd">Command Palette</button>
+    <button class="fab-item" data-fab="top">Scroll to Top</button>
+  </div>
+</div>
+
+<!-- ============ SCROLL TO TOP ============ -->
+<button class="scroll-top-btn" id="scrollTopBtn" aria-label="Scroll to top">
+  <svg viewBox="0 0 24 24" width="20" height="20"><line x1="12" y1="19" x2="12" y2="5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><polyline points="5 12 12 5 19 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+
+<!-- ============ TASK MODAL (Add/Edit) ============ -->
+<div class="modal-overlay" id="taskModalOverlay">
+  <div class="modal glass" role="dialog" aria-modal="true" aria-labelledby="taskModalTitle">
+    <div class="modal-header">
+      <h3 id="taskModalTitle">Add Task</h3>
+      <button class="icon-btn" id="taskModalClose" aria-label="Close">&times;</button>
+    </div>
+    <form id="taskForm" class="modal-form">
+      <input type="hidden" id="taskFormId" />
+      <label>Topic
+        <input type="text" id="taskFormTopic" required placeholder="e.g. Graph Traversals" />
+      </label>
+      <div class="form-row">
+        <label>Category
+          <select id="taskFormCategory" required></select>
+        </label>
+        <label>Date
+          <input type="date" id="taskFormDate" required />
+        </label>
+      </div>
+      <div class="form-row">
+        <label>Duration (min)
+          <input type="number" id="taskFormDuration" min="5" step="5" required />
+        </label>
+        <label>Difficulty
+          <select id="taskFormDifficulty">
+            <option>Easy</option>
+            <option>Medium</option>
+            <option>Hard</option>
+          </select>
+        </label>
+        <label>Priority
+          <select id="taskFormPriority">
+            <option>Low</option>
+            <option>Medium</option>
+            <option>High</option>
+          </select>
+        </label>
+      </div>
+      <div class="btn-row">
+        <button type="submit" class="btn btn-primary">Save Task</button>
+        <button type="button" class="btn btn-ghost" id="taskFormCancel">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ============ RESCHEDULE MODAL ============ -->
+<div class="modal-overlay" id="rescheduleModalOverlay">
+  <div class="modal glass small-modal" role="dialog" aria-modal="true" aria-labelledby="rescheduleTitle">
+    <div class="modal-header">
+      <h3 id="rescheduleTitle">Reschedule Task</h3>
+      <button class="icon-btn" id="rescheduleModalClose" aria-label="Close">&times;</button>
+    </div>
+    <div class="modal-form">
+      <p class="muted" id="rescheduleTaskName">Task</p>
+      <div class="btn-row wrap">
+        <button class="btn btn-ghost" data-reschedule="tomorrow">Tomorrow</button>
+        <button class="btn btn-ghost" data-reschedule="nextweek">Next Week</button>
+      </div>
+      <label>Custom Date
+        <input type="date" id="rescheduleCustomDate" />
+      </label>
+      <p class="muted small">All tasks scheduled after this one will automatically shift by the same number of days.</p>
+      <div class="btn-row">
+        <button class="btn btn-primary" id="rescheduleConfirmBtn">Confirm Reschedule</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ CONFETTI CANVAS ============ -->
+<canvas id="confettiCanvas" class="confetti-canvas" aria-hidden="true"></canvas>
+
+<!-- ============ PRINT-ONLY DOCUMENT (built dynamically before printing) ============ -->
+<div id="printArea" class="print-only" aria-hidden="true"></div>
+
+<!-- ============ TOAST CONTAINER ============ -->
+<div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+<!-- ============ CERTIFICATE MODAL ============ -->
+<div class="modal-overlay" id="certModalOverlay">
+  <div class="modal glass certificate-modal" role="dialog" aria-modal="true">
+    <div class="modal-header">
+      <h3>🎉 Roadmap Complete!</h3>
+      <button class="icon-btn" id="certModalClose" aria-label="Close">&times;</button>
+    </div>
+    <div class="certificate" id="certificateBody">
+      <p class="cert-label">Certificate of Completion</p>
+      <h2 class="cert-title">MomentumForge Placement Roadmap</h2>
+      <p class="cert-sub">Awarded for completing every task in the roadmap.</p>
+      <p class="cert-date" id="certDate"></p>
+    </div>
+  </div>
+</div>
+
+<!-- Premium Showcase Footer -->
+<footer class="showcase-footer">
+  <hr class="footer-divider">
+  <div class="footer-content">
+    <div class="footer-brand">Momentum Forge</div>
+    <div class="footer-copyright">© 2026 Revati Kadam. All rights reserved.</div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

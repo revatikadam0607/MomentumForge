@@ -1,0 +1,13 @@
+{
+  "name": "MomentumForge",
+  "short_name": "MomentumForge",
+  "description": "Turn daily effort into placement-ready progress.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#123A66",
+  "icons": [
+    { "src": "assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "assets/icons/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
