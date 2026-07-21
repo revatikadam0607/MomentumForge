@@ -10,7 +10,7 @@
 /* ---------------------------------------------------------
    1. GLOBAL STATE
 --------------------------------------------------------- */
-let STORAGE_KEY = "momentumForgeState_v1"; // reassigned per-user by auth.js once signed in
+const STORAGE_KEY = "momentumForgeState_v1";
 const THEME_KEY = "momentumForgeTheme";
 
 let ROADMAP = null;        // raw data loaded from roadmap.json
@@ -151,8 +151,7 @@ function initState(){
       lastCompletionDate: saved.lastCompletionDate || null,
       completedAllRoadmapShown: saved.completedAllRoadmapShown || false,
       nextTaskNumber: saved.nextTaskNumber || (ROADMAP.tasks.length + 1),
-      contentVersion: currentContentVersion,
-      lastPushAction: saved.lastPushAction || null
+      contentVersion: currentContentVersion
     };
   } else {
     STATE = {
@@ -164,8 +163,7 @@ function initState(){
       lastCompletionDate: null,
       completedAllRoadmapShown: false,
       nextTaskNumber: ROADMAP.tasks.length + 1,
-      contentVersion: currentContentVersion,
-      lastPushAction: null
+      contentVersion: currentContentVersion
     };
   }
 }
@@ -265,55 +263,17 @@ function missedTaskMessage(task){
  * stay accurate; `missedFromDate` (the original due date) is untouched
  * too, so "days overdue" keeps counting correctly against the real
  * original date even after a bulk push.
- *
- * The exact set of task IDs that got shifted is remembered in
- * STATE.lastPushAction, so a single "Undo" can precisely reverse just
- * this push — not a blind "shift everything back a day", which would
- * incorrectly touch tasks completed or added after the push happened.
  */
 function shiftEntireTimetable(days = 1){
-  const affectedIds = [];
+  let count = 0;
   STATE.tasks.forEach(t=>{
     if(!t.completed){
       t.date = toISODate(addDays(fromISODate(t.date), days));
-      affectedIds.push(t.id);
-    }
-  });
-  if(affectedIds.length > 0){
-    STATE.lastPushAction = { taskIds: affectedIds, days, at: Date.now() };
-    saveState();
-  }
-  return affectedIds.length;
-}
-
-/**
- * Reverses the most recent shiftEntireTimetable() call. Only touches
- * tasks that were part of that specific push and are still incomplete
- * (a task finished or deleted since the push is left alone). One-level
- * undo — consumed after use, re-armed by the next push.
- */
-function undoLastPush(){
-  const action = STATE.lastPushAction;
-  if(!action) return 0;
-
-  let count = 0;
-  action.taskIds.forEach(id=>{
-    const t = STATE.tasks.find(x=>x.id===id);
-    if(t && !t.completed){
-      t.date = toISODate(addDays(fromISODate(t.date), -action.days));
       count++;
     }
   });
-
-  STATE.lastPushAction = null;
-  saveState();
+  if(count > 0) saveState();
   return count;
-}
-
-function updatePushUndoButtonState(){
-  const btn = document.getElementById("undoPushBtn");
-  if(!btn) return;
-  btn.disabled = !STATE.lastPushAction;
 }
 
 /* ---------------------------------------------------------
@@ -720,19 +680,8 @@ function initDailyView(){
     if(!ok) return;
     const count = shiftEntireTimetable(1);
     showToast(`Pushed ${count} pending task(s) forward by 1 day`, "warning");
-    updatePushUndoButtonState();
     fullRerender();
   });
-
-  document.getElementById("undoPushBtn").addEventListener("click", ()=>{
-    const count = undoLastPush();
-    if(count === 0){ showToast("Nothing to undo", "warning"); return; }
-    showToast(`Reverted ${count} task(s) — pulled back by 1 day`, "success");
-    updatePushUndoButtonState();
-    fullRerender();
-  });
-
-  updatePushUndoButtonState();
 }
 
 function populateCategoryFilter(){
@@ -1712,9 +1661,7 @@ async function init(){
   buildCategoryColors();
   rolloverMissedTasks();
 
-  // initTheme() already ran once in auth.js, before sign-in even resolved
-  // (so the login screen itself respects dark/light preference) — calling
-  // it again here would double-register the toggle's click handler.
+  initTheme();
   initCustomCursor();
   initNavbar();
   initScrollTop();
@@ -1757,7 +1704,4 @@ async function init(){
   }, 5 * 60000);
 }
 
-// App startup is now gated behind authentication (see auth.js) instead
-// of running automatically on DOMContentLoaded — auth.js calls this once
-// a user is signed in (either fresh, or via a remembered session).
-window.startMomentumForgeApp = init;
+document.addEventListener("DOMContentLoaded", init);
