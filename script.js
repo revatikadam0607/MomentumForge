@@ -10,7 +10,7 @@
 /* ---------------------------------------------------------
    1. GLOBAL STATE
 --------------------------------------------------------- */
-const STORAGE_KEY = "momentumForgeState_v1";
+let STORAGE_KEY = "momentumForgeState_v1"; // reassigned per-user by auth.js once signed in
 const THEME_KEY = "momentumForgeTheme";
 
 let ROADMAP = null;        // raw data loaded from roadmap.json
@@ -151,7 +151,8 @@ function initState(){
       lastCompletionDate: saved.lastCompletionDate || null,
       completedAllRoadmapShown: saved.completedAllRoadmapShown || false,
       nextTaskNumber: saved.nextTaskNumber || (ROADMAP.tasks.length + 1),
-      contentVersion: currentContentVersion
+      contentVersion: currentContentVersion,
+      lastPushAction: saved.lastPushAction || null
     };
   } else {
     STATE = {
@@ -163,7 +164,8 @@ function initState(){
       lastCompletionDate: null,
       completedAllRoadmapShown: false,
       nextTaskNumber: ROADMAP.tasks.length + 1,
-      contentVersion: currentContentVersion
+      contentVersion: currentContentVersion,
+      lastPushAction: null
     };
   }
 }
@@ -263,17 +265,55 @@ function missedTaskMessage(task){
  * stay accurate; `missedFromDate` (the original due date) is untouched
  * too, so "days overdue" keeps counting correctly against the real
  * original date even after a bulk push.
+ *
+ * The exact set of task IDs that got shifted is remembered in
+ * STATE.lastPushAction, so a single "Undo" can precisely reverse just
+ * this push — not a blind "shift everything back a day", which would
+ * incorrectly touch tasks completed or added after the push happened.
  */
 function shiftEntireTimetable(days = 1){
-  let count = 0;
+  const affectedIds = [];
   STATE.tasks.forEach(t=>{
     if(!t.completed){
       t.date = toISODate(addDays(fromISODate(t.date), days));
+      affectedIds.push(t.id);
+    }
+  });
+  if(affectedIds.length > 0){
+    STATE.lastPushAction = { taskIds: affectedIds, days, at: Date.now() };
+    saveState();
+  }
+  return affectedIds.length;
+}
+
+/**
+ * Reverses the most recent shiftEntireTimetable() call. Only touches
+ * tasks that were part of that specific push and are still incomplete
+ * (a task finished or deleted since the push is left alone). One-level
+ * undo — consumed after use, re-armed by the next push.
+ */
+function undoLastPush(){
+  const action = STATE.lastPushAction;
+  if(!action) return 0;
+
+  let count = 0;
+  action.taskIds.forEach(id=>{
+    const t = STATE.tasks.find(x=>x.id===id);
+    if(t && !t.completed){
+      t.date = toISODate(addDays(fromISODate(t.date), -action.days));
       count++;
     }
   });
-  if(count > 0) saveState();
+
+  STATE.lastPushAction = null;
+  saveState();
   return count;
+}
+
+function updatePushUndoButtonState(){
+  const btn = document.getElementById("undoPushBtn");
+  if(!btn) return;
+  btn.disabled = !STATE.lastPushAction;
 }
 
 /* ---------------------------------------------------------
@@ -680,8 +720,19 @@ function initDailyView(){
     if(!ok) return;
     const count = shiftEntireTimetable(1);
     showToast(`Pushed ${count} pending task(s) forward by 1 day`, "warning");
+    updatePushUndoButtonState();
     fullRerender();
   });
+
+  document.getElementById("undoPushBtn").addEventListener("click", ()=>{
+    const count = undoLastPush();
+    if(count === 0){ showToast("Nothing to undo", "warning"); return; }
+    showToast(`Reverted ${count} task(s) — pulled back by 1 day`, "success");
+    updatePushUndoButtonState();
+    fullRerender();
+  });
+
+  updatePushUndoButtonState();
 }
 
 function populateCategoryFilter(){
@@ -1405,6 +1456,37 @@ function initSettings(){
     requestAnimationFrame(()=> requestAnimationFrame(()=> window.print()));
   });
   document.getElementById("resetBtn").addEventListener("click", resetProgress);
+
+  const changeInput = document.getElementById("changeStartDateInput");
+  changeInput.value = ROADMAP.meta.startDate;
+  document.getElementById("changeStartDateBtn").addEventListener("click", ()=>{
+    const newDate = changeInput.value;
+    if(!newDate) return;
+    applyStartDateChange(newDate);
+  });
+}
+
+/**
+ * Re-anchors an already-running app to a new start date (used by the
+ * Settings card, as opposed to the one-time onboarding prompt).
+ */
+function applyStartDateChange(newDateStr){
+  const templateStart = fromISODate(ROADMAP.meta.startDate);
+  const chosenStart = fromISODate(newDateStr);
+  const dayOffset = Math.round((chosenStart - templateStart) / 86400000);
+  if(dayOffset === 0) return;
+
+  STATE.tasks.forEach(t => { t.date = toISODate(addDays(fromISODate(t.date), dayOffset)); });
+  ROADMAP.timeline.forEach(m => { m.date = toISODate(addDays(fromISODate(m.date), dayOffset)); });
+  ROADMAP.meta.startDate = newDateStr;
+
+  if(currentUser) localStorage.setItem(`momentumForgeStartDate_v1_${currentUser.uid}`, newDateStr);
+  saveState();
+
+  renderHero(); renderDashboard(); renderSmartSchedule(); renderDaily(); renderTimeline();
+  if(document.getElementById("panel-weekly")?.classList.contains("active")) renderWeekly();
+  if(document.getElementById("panel-monthly")?.classList.contains("active")) renderMonthly();
+  showToast("Roadmap dates updated!", "success");
 }
 
 /* --- Branded print/PDF document builder --- */
@@ -1645,11 +1727,10 @@ function initKeyboardShortcuts(){
 /* ---------------------------------------------------------
    31. INIT
 --------------------------------------------------------- */
-async function init(){
+async function init(userStartDate){
   try{
     await loadRoadmap();
-  }catch(err){
-    document.body.innerHTML = `<div style="padding:60px;text-align:center;font-family:sans-serif;">
+  }catch(err){    document.body.innerHTML = `<div style="padding:60px;text-align:center;font-family:sans-serif;">
       <h2>Could not load roadmap.json</h2>
       <p>Make sure roadmap.json is in the same folder as index.html and you're running this via a local server (not file://).</p>
     </div>`;
@@ -1657,11 +1738,31 @@ async function init(){
     return;
   }
 
-  initState();
-  buildCategoryColors();
-  rolloverMissedTasks();
+if(userStartDate) shiftRoadmapToStartDate(userStartDate);
 
-  initTheme();
+/**
+ * Shifts every task date and timeline milestone in ROADMAP so that
+ * roadmap.json's original start date lands on the date the user chose.
+ * Must run after loadRoadmap() and before initState(), since initState()
+ * clones ROADMAP.tasks into STATE.
+ */
+function shiftRoadmapToStartDate(userStartDate){
+  const templateStart = fromISODate(ROADMAP.meta.startDate);
+  const chosenStart = fromISODate(userStartDate);
+  const dayOffset = Math.round((chosenStart - templateStart) / 86400000);
+  if(dayOffset === 0) return;
+
+  ROADMAP.tasks.forEach(t => { t.date = toISODate(addDays(fromISODate(t.date), dayOffset)); });
+  ROADMAP.timeline.forEach(m => { m.date = toISODate(addDays(fromISODate(m.date), dayOffset)); });
+  ROADMAP.meta.startDate = userStartDate;
+}
+
+  initState();
+  buildCategoryColors();  rolloverMissedTasks();
+
+  // initTheme() already ran once in auth.js, before sign-in even resolved
+  // (so the login screen itself respects dark/light preference) — calling
+  // it again here would double-register the toggle's click handler.
   initCustomCursor();
   initNavbar();
   initScrollTop();
@@ -1704,4 +1805,7 @@ async function init(){
   }, 5 * 60000);
 }
 
-document.addEventListener("DOMContentLoaded", init);
+// App startup is now gated behind authentication (see auth.js) instead
+// of running automatically on DOMContentLoaded — auth.js calls this once
+// a user is signed in (either fresh, or via a remembered session).
+window.startMomentumForgeApp = init;
