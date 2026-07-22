@@ -2,7 +2,7 @@
   "meta": {
     "projectName": "MomentumForge",
     "tagline": "Turn daily effort into placement-ready progress.",
-    "startDate": "2026-07-20",
+    "startDate": "2026-07-22",
     "weeklyGoalHours": 25,
     "contentVersion": 2,
     "categories": [
@@ -123,63 +123,63 @@
   "timeline": [
     {
       "id": "t1",
-      "label": "20 July",
+      "label": "22 July",
       "sublabel": "Kickoff",
-      "date": "2026-07-20"
+      "date": "2026-07-22"
     },
     {
       "id": "t2",
       "label": "Week 1",
       "sublabel": "Arrays & Strings",
-      "date": "2026-07-27"
+      "date": "2026-08-01"
     },
     {
       "id": "t3",
       "label": "Week 2",
       "sublabel": "Recursion & Sorting",
-      "date": "2026-08-03"
+      "date": "2026-08-08"
     },
     {
       "id": "t4",
       "label": "Week 3",
       "sublabel": "Trees & Graphs Intro",
-      "date": "2026-08-10"
+      "date": "2026-08-15"
     },
     {
       "id": "t5",
       "label": "September",
       "sublabel": "DP & Backend Basics",
-      "date": "2026-09-03"
+      "date": "2026-09-08"
     },
     {
       "id": "t6",
       "label": "October",
       "sublabel": "System Design + Projects",
-      "date": "2026-10-03"
+      "date": "2026-10-08"
     },
     {
       "id": "t7",
       "label": "November",
       "sublabel": "Mock Interviews",
-      "date": "2026-11-03"
+      "date": "2026-11-08"
     },
     {
       "id": "t8",
       "label": "December",
       "sublabel": "Applications & Rounds",
-      "date": "2026-12-03"
+      "date": "2026-12-08"
     },
     {
       "id": "t9",
       "label": "Interview Ready",
       "sublabel": "Placement Season",
-      "date": "2027-01-03"
+      "date": "2027-01-08"
     }
   ],
   "tasks": [
     {
       "id": "task-001",
-      "date": "2026-07-20",
+      "date": "2026-07-22",
       "category": "DSA",
       "topic": "Arrays Basics",
       "durationMinutes": 45,
@@ -190,7 +190,7 @@
     },
     {
       "id": "task-002",
-      "date": "2026-07-20",
+      "date": "2026-07-22",
       "category": "Development",
       "topic": "HTML5 Semantic Tags",
       "durationMinutes": 60,
@@ -201,9 +201,9 @@
     },
     {
       "id": "task-003",
-      "date": "2026-07-20",
+      "date": "2026-07-22",
       "category": "DSA Sheet",
-      "topic": "DSA Sheet — Day 1",
+      "topic": "DSA Sheet \u2014 Day 1",
       "durationMinutes": 40,
       "difficulty": "Medium",
       "priority": "High",
@@ -212,7 +212,7 @@
     },
     {
       "id": "task-004",
-      "date": "2026-07-20",
+      "date": "2026-07-22",
       "category": "Revision",
       "topic": "Time Complexity Basics",
       "durationMinutes": 20,
@@ -223,7 +223,7 @@
     },
     {
       "id": "task-005",
-      "date": "2026-07-21",
+      "date": "2026-07-26",
       "category": "DSA",
       "topic": "Arrays - Two Pointer",
       "durationMinutes": 60,
@@ -234,7 +234,7 @@
     },
     {
       "id": "task-006",
-      "date": "2026-07-21",
+      "date": "2026-07-26",
       "category": "Development",
       "topic": "CSS Flexbox & Grid",
       "durationMinutes": 60,
@@ -245,9 +245,9 @@
     },
     {
       "id": "task-007",
-      "date": "2026-07-21",
+      "date": "2026-07-26",
       "category": "DSA Sheet",
-      "topic": "DSA Sheet — Day 2",
+      "topic": "DSA Sheet \u2014 Day 2",
       "durationMinutes": 40,
       "difficulty": "Medium",
       "priority": "High",
@@ -256,7 +256,7 @@
     },
     {
       "id": "task-008",
-      "date": "2026-07-22",
+      "date": "2026-07-27",
       "category": "DSA",
       "topic": "Strings Basics",
       "durationMinutes": 50,
@@ -267,7 +267,7 @@
     },
     {
       "id": "task-009",
-      "date": "2026-07-22",
+      "date": "2026-07-27",
       "category": "Development",
       "topic": "JavaScript DOM Manipulation",
       "durationMinutes": 60,
@@ -278,7 +278,7 @@
     },
     {
       "id": "task-010",
-      "date": "2026-07-23",
+      "date": "2026-07-28",
       "category": "DSA",
       "topic": "Binary Search",
       "durationMinutes": 55,
@@ -289,7 +289,7 @@
     },
     {
       "id": "task-011",
-      "date": "2026-07-23",
+      "date": "2026-07-28",
       "category": "Development",
       "topic": "JavaScript ES6+ Features",
       "durationMinutes": 45,
@@ -300,7 +300,7 @@
     },
     {
       "id": "task-012",
-      "date": "2026-07-24",
+      "date": "2026-07-29",
       "category": "DSA",
       "topic": "Recursion",
       "durationMinutes": 70,
@@ -311,7 +311,7 @@
     },
     {
       "id": "task-013",
-      "date": "2026-07-25",
+      "date": "2026-07-30",
       "category": "DSA",
       "topic": "Sorting Algorithms",
       "durationMinutes": 60,
@@ -322,7 +322,7 @@
     },
     {
       "id": "task-014",
-      "date": "2026-07-26",
+      "date": "2026-07-31",
       "category": "DSA",
       "topic": "Trees - Traversals",
       "durationMinutes": 65,
@@ -333,7 +333,7 @@
     },
     {
       "id": "task-015",
-      "date": "2026-07-27",
+      "date": "2026-08-01",
       "category": "DSA",
       "topic": "Graphs - BFS/DFS",
       "durationMinutes": 75,
@@ -344,7 +344,7 @@
     },
     {
       "id": "task-016",
-      "date": "2026-07-28",
+      "date": "2026-08-02",
       "category": "DSA",
       "topic": "Dynamic Programming Intro",
       "durationMinutes": 80,
@@ -355,7 +355,7 @@
     },
     {
       "id": "task-017",
-      "date": "2026-07-29",
+      "date": "2026-08-03",
       "category": "Development",
       "topic": "React Fundamentals",
       "durationMinutes": 90,
@@ -366,7 +366,7 @@
     },
     {
       "id": "task-018",
-      "date": "2026-07-30",
+      "date": "2026-08-04",
       "category": "Development",
       "topic": "Backend Mega Project - Setup",
       "durationMinutes": 90,
